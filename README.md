@@ -117,7 +117,7 @@ Log in via the VM's public ip address using the following command: `ssh -i ~/.ss
 
     Add the following lines instead:
 
-    `root /home/ec2-user/sinatra/public`
+    `root /home/ec2-user/sinatra/public;`
 
     `passenger_enabled on;`
 
@@ -125,7 +125,7 @@ Log in via the VM's public ip address using the following command: `ssh -i ~/.ss
 
     The final line mentioned above is used to pass inbound requests on port 80 to port 9292 where the sinatra application will run.
 
-3. Start the nginx server by running `/opt/nginx/sbin/nginx`
+3. Start the nginx server by running `sudo /opt/nginx/sbin/nginx`
 
 4. Run the sinatra application by running the following commands in the `/home/ec2-user/sinatra` directory:
 
