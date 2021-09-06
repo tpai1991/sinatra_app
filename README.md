@@ -58,7 +58,7 @@ The reason I have chosen these tools are because they are platform agnostic and 
             secret_key  = "$(your_secret_key)"
             region      = "ap-southeast-2"
         `}`
-   - The "rhel-ec2.tf" file defines the resources that will be created (security group, ec2 instance, key-pair)
+   - The "rhel-ec2.tf" file defines the resources that will be created (security group, ec2 instance, key-pair). In my terraform file I have configured the owner to be redhat and I am provisioning a RHEL8.4 VM. This was chosen because I am comfortable using redhat systems.
 2. In your project directory containing the terraform files, run the following commands:
 
     `terraform init` - To initialize terraform
