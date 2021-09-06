@@ -1,0 +1,79 @@
+---
+  - name: SET HOSTNAME AND INSTALL REQUIRED PACKAGES FOR SINATRA APP
+    host: ec2
+    remote_user: ec2-user
+    become: True
+    tasks:
+      - name: set hostname of vm 
+        hostname:
+          name: web-sinatra
+          use: systemd
+      - name: upgrade all packages 
+        dnf:
+          name: "*"
+          state: latest
+      - name: install packages 
+        dnf:
+          name: ["firewalld", "vim", "net-tools", "git", "policycoreutils-python-utils", "gcc", "gcc-c++", "libcurl-devel", "openssl-devel", "zlib-devel", "make", "redhat-rpm-config"]
+          state: latest
+          update_cache: True
+      - name: install ruby module
+        dnf:
+          name: "@ruby:2.7"
+          state: present
+      - name: install 'ruby-devel' package 
+        state: latest 
+        update_cache: True
+    
+  - name: START SERVICES | FIREWALLD
+    hosts: ec2 
+    remote_user: ec2-user 
+    become: True 
+    tasks:
+      - name: start and enable firewalld service 
+        service:
+          name: firewalld
+          state: started
+          enabled: yes
+      - name: add http service to public zone
+        firewalld:
+          port: 80/tcp
+          permanent: yes
+          immediate: True
+          state: enabled 
+          zone: public
+  
+  - name: CLONE GIT REPO FROM REAGROUP GITHUB
+    hosts: ec2 
+    remote_user: ec2-user
+    tasks: 
+      - name: clone sinatra app from github 
+        git:
+          repo: https://github.com/rea-cruitment/simple-sinatra-app.git
+          dest: /home/ec2-user/sinatra
+
+  - name: INSTALL APP DEPENDENCIES
+    hosts: ec2 
+    remote_user: ec2-user 
+    tasks:
+      - name: install passenger gem 
+        gem: 
+          name: passenger
+          state: present 
+      - name: install bundler
+        gem:
+          name: bundler
+          state: present 
+
+  - name: PREPARE DIRECTORIES TO RUN SINATRA APP 
+    hosts: ec2 
+    remote_user: ec2-user 
+    become: True
+    tasks: 
+      - name: make a "public" directory in sinatra app folder
+        path: /opt 
+        state: directory
+        recurse: yes
+        owner: ec2-user 
+        group: ec2-user
+        
