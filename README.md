@@ -100,6 +100,8 @@ Log in via the VM's public ip address using the following command: `ssh -i ~/.ss
     `[ec2-user@web-sinatra sinatra]$ passenger-install-nginx-module`
 
     At the prompt select `Ruby` as the choice of language. Press Enter.
+    
+    During the installation process, there may be recommendations presented. It is recommended you follow those instructions for the installation to go smoothly. For instance, on my VM I did not have sufficient memory to run passenger-nginx, so I followed the instructions to enable swap space. After doing so, the installation progressed successfully.
 
     At the next prompt enter `1` as the option for the installer to install nginx.
 
