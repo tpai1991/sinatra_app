@@ -74,6 +74,10 @@
     tasks: 
       - name: make a "public" directory in sinatra app folder
         file:
+          path: /home/ec2-user/sinatra/public
+          state: directory
+      - name: change ownership of /opt directory
+        file:
           path: /opt 
           state: directory
           recurse: yes
