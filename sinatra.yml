@@ -1,6 +1,6 @@
 ---
   - name: SET HOSTNAME AND INSTALL REQUIRED PACKAGES FOR SINATRA APP
-    host: ec2
+    hosts: ec2
     remote_user: ec2-user
     become: True
     tasks:
@@ -21,9 +21,11 @@
         dnf:
           name: "@ruby:2.7"
           state: present
-      - name: install 'ruby-devel' package 
-        state: latest 
-        update_cache: True
+      - name: install 'ruby-devel' package
+        dnf:
+          name: "ruby-devel"
+          state: latest 
+          update_cache: True
     
   - name: START SERVICES | FIREWALLD
     hosts: ec2 
@@ -71,9 +73,10 @@
     become: True
     tasks: 
       - name: make a "public" directory in sinatra app folder
-        path: /opt 
-        state: directory
-        recurse: yes
-        owner: ec2-user 
-        group: ec2-user
+        file:
+          path: /opt 
+          state: directory
+          recurse: yes
+          owner: ec2-user 
+          group: ec2-user
         
